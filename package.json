@@ -1,0 +1,24 @@
+{
+    "name": "pomodoro-timer"
+  , "description": "Free Pomodoro® Technique command line web app timer."
+  , "version": "0.0.1"
+  , "author": "Nick Baugh <niftylettuce@gmail.com>"
+  , "contributors": [
+      { "name": "Nick Baugh", "email": "niftylettuce@gmail.com" }
+    ]
+  , "keywords": [ "pomodoro", "technique", "timer", "cli", "command", "line" ]
+  , "homepage": "https://github.com/teelaunch/pomodoro-timer"
+  , "repository": {
+        "type": "git"
+      , "url": "https://github.com/teelaunch/pomodoro-timer.git"
+    }
+  , "engines": {
+        "node": "0.8.x"
+      , "npm": "1.1.x"
+    }
+  , "main": "pomodoro-timer"
+  , "bin": { "pomodoro-timer": "./bin/pomodoro-timer" }
+  , "dependencies": {
+        "growl": "1.6.1"
+    }
+}
