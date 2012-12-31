@@ -7,10 +7,10 @@
       { "name": "Nick Baugh", "email": "niftylettuce@gmail.com" }
     ]
   , "keywords": [ "pomodoro", "technique", "timer", "cli", "command", "line" ]
-  , "homepage": "https://github.com/teelaunch/pomodoro-timer"
+  , "homepage": "https://github.com/niftylettuce/pomodoro-timer"
   , "repository": {
         "type": "git"
-      , "url": "https://github.com/teelaunch/pomodoro-timer.git"
+      , "url": "https://github.com/niftylettuce/pomodoro-timer.git"
     }
   , "engines": {
         "node": "0.8.x"
