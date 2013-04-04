@@ -21,7 +21,7 @@ var growl    = require('growl')
   , path     = require('path')
   , fs       = require('fs')
   , version  = require('../package').version
-  //, play     = require('play')
+  , play     = require('play').Play()
   , pomodoro = path.join(__dirname, '..', 'assets', 'pomodoro-timer.png')
   , start    = path.join(__dirname, '..', 'assets', 'start.wav')
   , done     = path.join(__dirname, '..', 'assets', 'done.wav')
@@ -33,21 +33,11 @@ program
 program.prompt('task: ', createTask)
 
 function createTask(task) {
-  //play.sound(start)
-  growl(task, {
-      title: 'Pomodoro - Started'
-    , image: pomodoro
-  }, function(err) {
-    if (err) throw err
-    setTimeout(function() {
-      //play.sound(done)
-      growl(task, {
-          title: 'Pomodoro - Finished'
-        , image: pomodoro
-      }, function(err) {
-        if (err) throw err
-        process.exit()
-      })
-    }, 1500000)
-  })
+  play.sound(start)
+  growl(task, { title: 'Pomodoro - 25:00 Remaining', image: pomodoro })
+  setTimeout(function() {
+    play.sound(done)
+    growl(task, { title: 'Pomodoro - Take a break!', image: pomodoro })
+    process.exit()
+  }, 1500000)
 }

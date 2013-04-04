@@ -32,6 +32,6 @@
   "dependencies": {
     "growl": "~1.6.1",
     "commander": "~1.1.1",
-    "play": "~0.5.0"
+    "play": "git://github.com/niftylettuce/play.js.git"
   }
 }
