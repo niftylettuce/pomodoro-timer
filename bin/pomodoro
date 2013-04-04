@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+
+//     pomodoro-timer
+//     Copyright (c) 2013 Nick Baugh <niftylettuce@gmail.com>
+//     MIT Licensed
+
+//
+// Free Pomodoro® Technique CLI timer built with Node.
+//
+// The Pomodoro Technique® and Pomodoro™ are
+//  registered trademarks of Francesco Cirillo.
+//
+
+// * Author: [@niftylettuce](https://twitter.com/#!/niftylettuce)
+// * Source: <https://github.com/niftylettuce/pomodoro-timer>
+
+// # pomodoro-timer
+
+var growl    = require('growl')
+  , program  = require('commander')
+  , path     = require('path')
+  , fs       = require('fs')
+  , version  = require('../package').version
+  //, play     = require('play')
+  , pomodoro = path.join(__dirname, '..', 'assets', 'pomodoro-timer.png')
+  , start    = path.join(__dirname, '..', 'assets', 'start.wav')
+  , done     = path.join(__dirname, '..', 'assets', 'done.wav')
+
+program
+  .version(version)
+  .parse(process.argv)
+
+program.prompt('task: ', createTask)
+
+function createTask(task) {
+  //play.sound(start)
+  growl(task, {
+      title: 'Pomodoro - Started'
+    , image: pomodoro
+  }, function(err) {
+    if (err) throw err
+    setTimeout(function() {
+      //play.sound(done)
+      growl(task, {
+          title: 'Pomodoro - Finished'
+        , image: pomodoro
+      }, function(err) {
+        if (err) throw err
+        process.exit()
+      })
+    }, 1500000)
+  })
+}
