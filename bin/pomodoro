@@ -16,15 +16,23 @@
 
 // # pomodoro-timer
 
-var growl    = require('growl')
-  , program  = require('commander')
-  , path     = require('path')
-  , fs       = require('fs')
-  , version  = require('../package').version
-  , play     = require('play').Play()
-  , pomodoro = path.join(__dirname, '..', 'assets', 'pomodoro-timer.png')
-  , start    = path.join(__dirname, '..', 'assets', 'start.wav')
-  , done     = path.join(__dirname, '..', 'assets', 'done.wav')
+var growl     = require('growl')
+  , program   = require('commander')
+  , path      = require('path')
+  , fs        = require('fs')
+  , version   = require('../package').version
+  , play      = require('play').Play()
+  , pomodoro  = path.join(__dirname, '..', 'assets', 'pomodoro-timer.png')
+  , start     = path.join(__dirname, '..', 'assets', 'start.wav')
+  , done      = path.join(__dirname, '..', 'assets', 'done.wav')
+  , playSound = function() {}
+
+// Only try to play sound if play finds a media player
+play.addListener('checked', function() {
+  if (play.playerName) {
+    playSound = play.sound.bind(play)
+  }
+})
 
 program
   .version(version)
@@ -33,10 +41,10 @@ program
 program.prompt('task: ', createTask)
 
 function createTask(task) {
-  play.sound(start)
+  playSound(start)
   growl(task, { title: 'Pomodoro - 25:00 Remaining', image: pomodoro })
   setTimeout(function() {
-    play.sound(done)
+    playSound(done)
     growl(task, { title: 'Pomodoro - Take a break!', image: pomodoro })
     process.exit()
   }, 1500000)
