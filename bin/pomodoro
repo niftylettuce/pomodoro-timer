@@ -44,8 +44,9 @@ function createTask(task) {
   playSound(start)
   growl(task, { title: 'Pomodoro - 25:00 Remaining', image: pomodoro })
   setTimeout(function() {
-    playSound(done)
+    playSound(done, function(){
+      process.exit()
+    })
     growl(task, { title: 'Pomodoro - Take a break!', image: pomodoro })
-    process.exit()
   }, 1500000)
 }
