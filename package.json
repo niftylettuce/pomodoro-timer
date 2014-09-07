@@ -34,7 +34,7 @@
     "commander": "~1.1.1",
     "growl": "~1.6.1",
     "humanize-time": "0.0.1",
-    "play": "git://github.com/niftylettuce/play.js.git",
+    "play": "git://github.com/shime/play.js.git",
     "repeat-time": "0.0.1"
   }
 }
