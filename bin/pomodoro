@@ -25,6 +25,7 @@ var growl     = require('growl')
   , color     = require('color')
   , time      = require('humanize-time')
   , repeat    = require('repeat-time')
+  , after     = require('after-time')
 
   , version   = require('../package').version
   , pomodoro  = path.join(__dirname, '..', 'assets', 'pomodoro-timer.png')
@@ -71,10 +72,10 @@ function createTask(task) {
 
   playSound(start)
   growl(task, { title: 'Pomodoro - 25:00 Remaining', image: pomodoro })
-  setTimeout(function() {
+  after('25 m', function() {
     playSound(done, function(){
       process.exit()
     })
     growl(task, { title: 'Pomodoro - Take a break!', image: pomodoro })
-  }, 1500000)
+  })
 }

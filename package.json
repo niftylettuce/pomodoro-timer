@@ -30,6 +30,7 @@
     "pomodoro": "./bin/pomodoro"
   },
   "dependencies": {
+    "after-time": "0.0.1",
     "color": "^0.7.1",
     "commander": "~1.1.1",
     "growl": "~1.6.1",
