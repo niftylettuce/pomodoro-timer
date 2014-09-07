@@ -30,8 +30,11 @@
     "pomodoro": "./bin/pomodoro"
   },
   "dependencies": {
-    "growl": "~1.6.1",
+    "color": "^0.7.1",
     "commander": "~1.1.1",
-    "play": "git://github.com/niftylettuce/play.js.git"
+    "growl": "~1.6.1",
+    "humanize-time": "0.0.1",
+    "play": "git://github.com/niftylettuce/play.js.git",
+    "repeat-time": "0.0.1"
   }
 }

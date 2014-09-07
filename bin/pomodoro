@@ -20,8 +20,13 @@ var growl     = require('growl')
   , program   = require('commander')
   , path      = require('path')
   , fs        = require('fs')
-  , version   = require('../package').version
   , play      = require('play').Play()
+  , Progress  = require('../ext/progress')
+  , color     = require('color')
+  , time      = require('humanize-time')
+  , repeat    = require('repeat-time')
+
+  , version   = require('../package').version
   , pomodoro  = path.join(__dirname, '..', 'assets', 'pomodoro-timer.png')
   , start     = path.join(__dirname, '..', 'assets', 'start.wav')
   , done      = path.join(__dirname, '..', 'assets', 'done.wav')
@@ -40,7 +45,27 @@ program
 
 program.prompt('task: ', createTask)
 
+function renderProgressBar(task){
+  var bar  = new Progress(task + ' :bar :percent :elapsed'.red, {
+    total: 25 * 60,
+    width: 25,
+    formatter: function(eta, elapsed, percent){
+      return this.fmt
+        .replace(':current', this.curr)
+        .replace(':total', this.total)
+        .replace(':elapsed', isNaN(elapsed) ? '0.0' : time(elapsed))
+        .replace(':eta', (isNaN(eta) || !isFinite(eta)) ? '0.0' : (eta / 1000)
+          .toFixed(1))
+        .replace(':percent', percent.toFixed(0) + '%')
+    }
+  })
+  bar.tick()
+  repeat('1 s', function(){ bar.tick() })
+}
+
 function createTask(task) {
+  renderProgressBar(task)
+
   playSound(start)
   growl(task, { title: 'Pomodoro - 25:00 Remaining', image: pomodoro })
   setTimeout(function() {
