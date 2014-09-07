@@ -67,15 +67,22 @@ function renderProgressBar(task){
   repeat('1 s', function(){ bar.tick() })
 }
 
-function createTask(task) {
-  renderProgressBar(task)
-
-  playSound(start)
+function notifyGrowl(task, callback){
   growl(task, { title: 'Pomodoro - 25:00 Remaining', image: pomodoro })
   after('25 m', function() {
-    playSound(done, function(){
-      process.exit()
-    })
+    callback()
     growl(task, { title: 'Pomodoro - Take a break!', image: pomodoro })
   })
+}
+
+function terminate(){
+  playSound(done, function(){
+    process.exit()
+  })
+}
+
+function createTask(task) {
+  renderProgressBar(task)
+  playSound(start)
+  notifyGrowl(task, terminate)
 }
