@@ -30,7 +30,10 @@ var growl     = require('growl')
   , pomodoro  = path.join(__dirname, '..', 'assets', 'pomodoro-timer.png')
   , start     = path.join(__dirname, '..', 'assets', 'start.wav')
   , done      = path.join(__dirname, '..', 'assets', 'done.wav')
-  , playSound = function() {}
+  , playSound = function(sound, callback) {
+      var callback = callback || function() {}
+      callback()
+  }
 
 // Only try to play sound if play finds a media player
 play.addListener('checked', function() {
