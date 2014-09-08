@@ -45,9 +45,14 @@ play.addListener('checked', function() {
 
 program
   .version(version)
+  .option('-t, --task <name>', 'task name')
   .parse(process.argv)
 
-program.prompt('task: ', createTask)
+if (program.task){
+  createTask(program.task)
+} else {
+  program.help()
+}
 
 function renderProgressBar(task){
   var bar  = new Progress(task + ' :bar :percent :elapsed'.red, {
