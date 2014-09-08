@@ -7,8 +7,13 @@
     {
       "name": "Nick Baugh",
       "email": "niftylettuce@gmail.com"
+    },
+    {
+      "name": "Hrvoje Simic",
+      "email": "shime.ferovac@gmail.com"
     }
   ],
+  "license": "MIT",
   "keywords": [
     "pomodoro",
     "technique",
