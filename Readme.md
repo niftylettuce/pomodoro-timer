@@ -5,13 +5,21 @@
 
 Free Pomodoro® Technique CLI timer built with Node.
 
-```bash
+## Installation
+```
 npm install -g pomodoro-timer
+```
+
+## Usage
+
+```
 pomodoro --help
-pomodoro
-task: [enter description]
 ```
 
 ## Notice
 
 The Pomodoro Technique® and Pomodoro™ are registered trademarks of Francesco Cirillo.
+
+## License
+
+MIT
