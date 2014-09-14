@@ -22,7 +22,7 @@ var growl     = require('growl')
   , fs        = require('fs')
   , play      = require('play').Play()
   , Progress  = require('../ext/progress')
-  , color     = require('color')
+  , clc       = require('cli-color')
   , time      = require('humanize-time')
   , repeat    = require('repeat-time')
   , after     = require('after-time')
@@ -55,7 +55,7 @@ if (program.task){
 }
 
 function renderProgressBar(task){
-  var bar  = new Progress(task + ' :bar :percent :elapsed'.red, {
+  var bar  = new Progress(clc.red(task + ' :bar :percent :elapsed'), {
     total: 25 * 60,
     width: 25,
     formatter: function(eta, elapsed, percent){

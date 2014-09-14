@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "after-time": "0.0.1",
-    "color": "^0.7.1",
+    "cli-color": "^0.3.2",
     "commander": "~1.1.1",
     "growl": "~1.6.1",
     "humanize-time": "0.0.1",
