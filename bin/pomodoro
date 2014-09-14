@@ -20,7 +20,7 @@ var growl     = require('growl')
   , program   = require('commander')
   , path      = require('path')
   , fs        = require('fs')
-  , play      = require('play').Play()
+  , player    = require('play-sound')()
   , Progress  = require('../ext/progress')
   , clc       = require('cli-color')
   , time      = require('humanize-time')
@@ -31,17 +31,6 @@ var growl     = require('growl')
   , pomodoro  = path.join(__dirname, '..', 'assets', 'pomodoro-timer.png')
   , start     = path.join(__dirname, '..', 'assets', 'start.wav')
   , done      = path.join(__dirname, '..', 'assets', 'done.wav')
-  , playSound = function(sound, callback) {
-      var callback = callback || function() {}
-      callback()
-  }
-
-// Only try to play sound if play finds a media player
-play.addListener('checked', function() {
-  if (play.playerName) {
-    playSound = play.sound.bind(play)
-  }
-})
 
 program
   .version(version)
@@ -81,7 +70,7 @@ function notifyGrowl(task, callback){
 }
 
 function terminate(){
-  playSound(done, function(){
+  player.play(done, function(){
     console.log()
     process.exit()
   })
@@ -89,6 +78,6 @@ function terminate(){
 
 function createTask(task) {
   renderProgressBar(task)
-  playSound(start)
+  player.play(start)
   notifyGrowl(task, terminate)
 }
