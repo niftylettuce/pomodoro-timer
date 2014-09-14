@@ -32,6 +32,8 @@ var growl     = require('growl')
   , start     = path.join(__dirname, '..', 'assets', 'start.wav')
   , done      = path.join(__dirname, '..', 'assets', 'done.wav')
 
+var self = this
+
 program
   .version(version)
   .option('-t, --task <name>', 'task name')
@@ -58,7 +60,7 @@ function renderProgressBar(task){
     }
   })
   bar.tick()
-  repeat('1 s', function(){ bar.tick() })
+  self.tick = repeat('1 s', function(){ bar.tick() })
 }
 
 function notifyGrowl(task, callback){
@@ -70,6 +72,7 @@ function notifyGrowl(task, callback){
 }
 
 function terminate(){
+  after('1 s', function() { clearInterval(self.tick) })
   player.play(done, function(){
     console.log()
     process.exit()
