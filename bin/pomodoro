@@ -21,6 +21,7 @@ var growl     = require('growl')
   , path      = require('path')
   , fs        = require('fs')
   , player    = require('play-sound')()
+  , Machine   = require('micro-machine')
   , Progress  = require('../ext/progress')
   , clc       = require('cli-color')
   , time      = require('humanize-time')
@@ -32,55 +33,87 @@ var growl     = require('growl')
   , start     = path.join(__dirname, '..', 'assets', 'start.wav')
   , done      = path.join(__dirname, '..', 'assets', 'done.wav')
 
-var self = this
-
 program
   .version(version)
   .option('-t, --task <name>', 'task name')
   .parse(process.argv)
 
-if (program.task){
-  createTask(program.task)
-} else {
-  program.help()
-}
 
-function renderProgressBar(task){
-  var bar  = new Progress(clc.red(task + ' :bar :percent :elapsed'), {
-    total: 25 * 60,
-    width: 25,
-    formatter: function(eta, elapsed, percent){
-      return this.fmt
+var progressBar = {
+  render: function(format, minutes){
+    // TODO: remove when/if this PR is merged:
+    // https://github.com/visionmedia/node-progress/pull/76
+    var bar  = new Progress(format, {
+      total: minutes * 60,
+      width: 25,
+      formatter: function(eta, elapsed, percent){
+        return this.fmt
         .replace(':current', this.curr)
         .replace(':total', this.total)
         .replace(':elapsed', isNaN(elapsed) ? '0.0' : time(elapsed))
         .replace(':eta', (isNaN(eta) || !isFinite(eta)) ? '0.0' : (eta / 1000)
-          .toFixed(1))
-        .replace(':percent', percent.toFixed(0) + '%')
+                 .toFixed(1))
+                 .replace(':percent', percent.toFixed(0) + '%')
+      }
+    })
+    clearInterval(this.tick)
+    bar.tick()
+    this.tick = repeat('1 s', function(){ bar.tick() })
+  }
+}
+
+function notifyGrowl(opts, next){
+  var opts = opts || {},
+     name = opts.name,
+     isBreak = /break/.test(name),
+     duration = opts.duration || '25 minutes',
+     title = 'Pomodoro - ' + duration + ' remaining'
+
+  growl(name, { title: title, image: pomodoro })
+  after(duration, function() { next() })
+}
+
+if (program.task){
+  init(program.task)
+} else {
+  program.help()
+}
+
+function init(task){
+  var machine = new Machine('break')
+  machine.breakCounter = 0
+
+  machine.transitionsFor.change = { work: 'break', break: 'work' }
+  machine.on('change', function(machine){
+    if(machine.state === "break"){
+      machine.takeBreak()
+    } else {
+      machine.workOn(task)
     }
   })
-  bar.tick()
-  self.tick = repeat('1 s', function(){ bar.tick() })
-}
 
-function notifyGrowl(task, callback){
-  growl(task, { title: 'Pomodoro - 25:00 Remaining', image: pomodoro })
-  after('25 m', function() {
-    callback()
-    growl(task, { title: 'Pomodoro - Take a break!', image: pomodoro })
-  })
-}
+  machine.workOn = function(task){
+    progressBar.render(clc.red(task + ' :bar :percent :elapsed'), 25)
+    player.play(start)
+    notifyGrowl({name: task}, function(){
+      player.play(done)
+      machine.trigger('change')
+    })
+  }
 
-function terminate(){
-  after('1 s', function() { clearInterval(self.tick) })
-  player.play(done, function(){
-    console.log()
-    process.exit()
-  })
-}
+  machine.takeBreak = function(isLong){
+    this.breakCounter++
 
-function createTask(task) {
-  renderProgressBar(task)
-  player.play(start)
-  notifyGrowl(task, terminate)
+    var isLong = machine.breakCounter % 4 == 0,
+        minutes = isLong ? 30 : 5,
+        duration = minutes.toString() + " minutes",
+        title   = isLong ? "long break" : "short break"
+
+    progressBar.render(clc.green(title + ' :bar :percent :elapsed'), minutes)
+    notifyGrowl({name: title, duration: duration}, function(){
+      machine.trigger('change')
+    })
+  }
+
+  machine.trigger('change')
 }

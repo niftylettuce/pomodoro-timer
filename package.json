@@ -40,6 +40,7 @@
     "commander": "~1.1.1",
     "growl": "~1.6.1",
     "humanize-time": "0.0.1",
+    "micro-machine": "^0.5.0",
     "play-sound": "0.0.2",
     "repeat-time": "0.0.1"
   }
