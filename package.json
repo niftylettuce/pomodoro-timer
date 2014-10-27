@@ -1,7 +1,7 @@
 {
   "name": "pomodoro-timer",
   "description": "Free Pomodoro® Technique command line web app timer.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Nick Baugh <niftylettuce@gmail.com>",
   "contributors": [
     {
