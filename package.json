@@ -41,7 +41,7 @@
     "growl": "~1.6.1",
     "humanize-time": "0.0.1",
     "micro-machine": "^0.5.0",
-    "play-sound": "0.0.2",
+    "play": "^0.5.0",
     "repeat-time": "0.0.1"
   }
 }

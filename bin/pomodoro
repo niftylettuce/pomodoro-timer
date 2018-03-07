@@ -20,7 +20,7 @@ var growl     = require('growl')
   , program   = require('commander')
   , path      = require('path')
   , fs        = require('fs')
-  , player    = require('play-sound')()
+  , player    = require('play')
   , Machine   = require('micro-machine')
   , Progress  = require('../ext/progress')
   , clc       = require('cli-color')
@@ -94,9 +94,9 @@ function init(task){
 
   machine.workOn = function(task){
     progressBar.render(clc.red(task + ' :bar :percent :elapsed'), 25)
-    player.play(start)
+    player.sound(start)
     notifyGrowl({name: task}, function(){
-      player.play(done)
+      player.sound(done)
       machine.trigger('change')
     })
   }
